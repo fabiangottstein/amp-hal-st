@@ -50,6 +50,17 @@ target_compile_definitions(st.hal_driver_stm32wbxx PUBLIC
     DEVICE_HEADER="stm32wbxx.h"
 )
 
+add_hal_driver(st.hal_driver_stm32h5xx STM32H5xx_HAL_Driver CMSIS_STM32H5xx)
+emil_build_for(st.hal_driver_stm32h5xx TARGET_MCU_FAMILY stm32h5xx PREREQUISITE_BOOL HALST_STANDALONE)
+
+target_compile_definitions(st.hal_driver_stm32h5xx PUBLIC
+    USE_HAL_DRIVER=1
+    STM32H5=1
+    DEVICE_HEADER="stm32h5xx.h"
+    $<$<STREQUAL:${TARGET_MCU},stm32h563>:STM32H563xx=1>
+    $<$<STREQUAL:${TARGET_MCU},stm32h573>:STM32H573xx=1>
+)
+
 add_library(st.hal_driver INTERFACE)
 emil_build_for(st.hal_driver TARGET_MCU_VENDOR st PREREQUISITE_BOOL HALST_STANDALONE)
 

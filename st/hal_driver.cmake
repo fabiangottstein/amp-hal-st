@@ -8,6 +8,7 @@ function(add_hal_driver target_name hal_driver cmsis)
         "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/${hal_driver}/Inc>"
         "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/${cmsis}/Core/Include>"
         "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/${st_include}/Include>"
+        "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/${st_include}/Include/Templates>"
         "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/hal_conf>"
         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${hal_driver}/Inc>"
         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${cmsis}/Core/Include>"
@@ -29,7 +30,8 @@ function(add_hal_driver target_name hal_driver cmsis)
         ${hal_driver}/Src/*.c
         ${cmsis}/Core/Include/*.h
         ${cmsis}/Device/ST/*/Include/*.h
-        ${cmsis}/Device/ST/*/Source/Templates/system_*.c
+        ${cmsis}/Device/ST/*/Source/Templates/*.h
+        ${cmsis}/Device/ST/*/Source/Templates/system_${TARGET_MCU_FAMILY}.c
         hal_conf/*_hal_conf.h
     )
     set(sources)
