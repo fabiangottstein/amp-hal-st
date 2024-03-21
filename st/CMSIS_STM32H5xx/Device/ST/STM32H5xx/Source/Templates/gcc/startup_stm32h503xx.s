@@ -32,6 +32,7 @@
 
 .global	g_pfnVectors
 .global	Default_Handler
+.global Default_Handler_Forwarded
 
 /* start address for the initialization values of the .data section.
 defined in linker script */
@@ -112,7 +113,7 @@ LoopForever:
     .section	.text.Default_Handler,"ax",%progbits
 Default_Handler:
 Infinite_Loop:
-	b	Infinite_Loop
+	b  Default_Handler_Forwarded
 	.size	Default_Handler, .-Default_Handler
 /******************************************************************************
 *
@@ -178,7 +179,7 @@ g_pfnVectors:
 	.word	GPDMA1_Channel6_IRQHandler
 	.word	GPDMA1_Channel7_IRQHandler
 	.word	IWDG_IRQHandler
-	.word	0	
+	.word	0
 	.word	ADC1_IRQHandler
 	.word	DAC1_IRQHandler
 	.word	FDCAN1_IT0_IRQHandler
@@ -199,7 +200,7 @@ g_pfnVectors:
 	.word	I2C2_ER_IRQHandler
 	.word	SPI1_IRQHandler
 	.word	SPI2_IRQHandler
-	.word	SPI3_IRQHandler	
+	.word	SPI3_IRQHandler
 	.word	USART1_IRQHandler
 	.word	USART2_IRQHandler
 	.word	USART3_IRQHandler
@@ -223,15 +224,15 @@ g_pfnVectors:
     .word	0
     .word	0
     .word	0
-    .word	0	
-    .word	0	
-    .word	0	
-    .word	0	
-    .word	0	
-    .word	0	
-    .word	0	
-    .word	0	
-    .word	0	
+    .word	0
+    .word	0
+    .word	0
+    .word	0
+    .word	0
+    .word	0
+    .word	0
+    .word	0
+    .word	0
 	.word	GPDMA2_Channel0_IRQHandler
 	.word	GPDMA2_Channel1_IRQHandler
 	.word	GPDMA2_Channel2_IRQHandler
@@ -254,8 +255,8 @@ g_pfnVectors:
 	.word	0
 	.word	0
 	.word	0
-	.word	0	
-	.word	DTS_IRQHandler	
+	.word	0
+	.word	DTS_IRQHandler
 	.word	RNG_IRQHandler
 	.word	0
 	.word	0
@@ -264,7 +265,7 @@ g_pfnVectors:
 	.word	0
 	.word	0
 	.word	0
-	.word	0	
+	.word	0
 	.word	I3C1_EV_IRQHandler
 	.word	I3C1_ER_IRQHandler
 	.word	0
@@ -272,7 +273,7 @@ g_pfnVectors:
 	.word	0
 	.word	0
 	.word	0
-	.word	0	
+	.word	0
 	.word	I3C2_EV_IRQHandler
 	.word	I3C2_ER_IRQHandler
 	.word	COMP1_IRQHandler
@@ -289,7 +290,7 @@ g_pfnVectors:
 
 	.weak	NMI_Handler
 	.thumb_set NMI_Handler,Default_Handler
-	
+
 	.weak	HardFault_Handler
 	.thumb_set HardFault_Handler,Default_Handler
 
@@ -391,10 +392,10 @@ g_pfnVectors:
 
 	.weak	GPDMA1_Channel1_IRQHandler
 	.thumb_set GPDMA1_Channel1_IRQHandler,Default_Handler
-	
+
 	.weak	GPDMA1_Channel2_IRQHandler
 	.thumb_set GPDMA1_Channel2_IRQHandler,Default_Handler
-	
+
 	.weak	GPDMA1_Channel3_IRQHandler
 	.thumb_set GPDMA1_Channel3_IRQHandler,Default_Handler
 
@@ -410,7 +411,7 @@ g_pfnVectors:
 	.weak	GPDMA1_Channel7_IRQHandler
 	.thumb_set GPDMA1_Channel7_IRQHandler,Default_Handler
 
-	.weak	IWDG_IRQHandler	
+	.weak	IWDG_IRQHandler
 	.thumb_set IWDG_IRQHandler,Default_Handler
 
 	.weak	ADC1_IRQHandler
@@ -518,24 +519,24 @@ g_pfnVectors:
 	.weak	GPDMA2_Channel7_IRQHandler
 	.thumb_set GPDMA2_Channel7_IRQHandler,Default_Handler
 
-	.weak	FPU_IRQHandler	
+	.weak	FPU_IRQHandler
 	.thumb_set FPU_IRQHandler,Default_Handler
-	.weak	ICACHE_IRQHandler	
+	.weak	ICACHE_IRQHandler
 	.thumb_set ICACHE_IRQHandler,Default_Handler
 
-	.weak	DTS_IRQHandler	
+	.weak	DTS_IRQHandler
 	.thumb_set DTS_IRQHandler,Default_Handler
 
 	.weak	RNG_IRQHandler
 	.thumb_set RNG_IRQHandler,Default_Handler
 
-	.weak	HASH_IRQHandler	
+	.weak	HASH_IRQHandler
 	.thumb_set HASH_IRQHandler,Default_Handler
 
 	.weak	I3C1_EV_IRQHandler
 	.thumb_set I3C1_EV_IRQHandler,Default_Handler
 
-	.weak	I3C1_ER_IRQHandler	
+	.weak	I3C1_ER_IRQHandler
 	.thumb_set I3C1_ER_IRQHandler,Default_Handler
 
 	.weak	I3C2_EV_IRQHandler
