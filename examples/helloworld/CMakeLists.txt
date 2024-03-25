@@ -2,11 +2,12 @@ add_executable(hal_st.helloworld_nucleo64 Main.cpp)
 emil_build_for(hal_st.helloworld_nucleo64
     TARGET_MCU stm32g474
     TARGET_MCU stm32wb55
+    TARGET_MCU stm32h563
     PREREQUISITE_BOOL HALST_BUILD_EXAMPLES
 )
 
 target_compile_definitions(hal_st.helloworld_nucleo64 PUBLIC
-    $<$<NOT:$<STREQUAL:${TARGET_MCU},stm32wb55>>:NUCLEO=Nucleo64Ui>
+    $<$<NOT:$<STREQUAL:${TARGET_MCU},stm32wb55>>:NUCLEO=Nucleo144Ui>
     $<$<STREQUAL:${TARGET_MCU},stm32wb55>:NUCLEO=Nucleo64WBUi>
 )
 

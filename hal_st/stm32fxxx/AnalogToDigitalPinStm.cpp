@@ -39,7 +39,7 @@ namespace hal
     {
         ADC_ChannelConfTypeDef channelConfig;
         channelConfig.Channel = adcChannel[analogPin.AdcChannel(adc.index + 1)];
-#if defined(STM32WB) || defined(STM32G0) || defined(STM32G4)
+#if defined(STM32WB) || defined(STM32G0) || defined(STM32G4) || defined(STM32H5)
         channelConfig.Rank = ADC_REGULAR_RANK_1;
 #else
         channelConfig.Rank = 1;
@@ -53,6 +53,11 @@ namespace hal
         channelConfig.SingleDiff = ADC_SINGLE_ENDED;
 #elif defined(STM32G0)
         channelConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES_5;
+#elif defined(STM32H5)
+        channelConfig.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
+        channelConfig.SingleDiff = ADC_DIFFERENTIAL_ENDED;
+        channelConfig.OffsetNumber = ADC_OFFSET_NONE;
+        channelConfig.Offset = 0;
 #else
         channelConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
         channelConfig.Offset = 0;
@@ -70,6 +75,8 @@ namespace hal
         , interruptHandler(ADC1_IRQn, [this]()
 #elif defined(STM32G4)
         , interruptHandler(ADC1_2_IRQn, [this]()
+#elif defined(STM32H5)
+        , interruptHandler(ADC1_IRQn, [this]()
 #else
         , interruptHandler(ADC_IRQn, [this]()
 #endif
@@ -122,7 +129,7 @@ namespace hal
     void AdcStm::MeasurementDone()
     {
         assert(onDone != nullptr);
-#if defined(STM32WB) || defined(STM32G4) || defined(STM32G0)
+#if defined(STM32WB) || defined(STM32G4) || defined(STM32G0) || defined(STM32H5)
         handle.Instance->ISR |= ADC_ISR_EOC | ADC_ISR_EOS;
 #else
         handle.Instance->SR &= ~ADC_SR_EOC;

@@ -25,7 +25,7 @@ namespace hal
         spiHandle.Init.TIMode = SPI_TIMODE_DISABLED;
         spiHandle.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLED;
         spiHandle.Init.CRCPolynomial = 1;
-#if defined(STM32F0) || defined(STM32F1) || defined(STM32F3) || defined(STM32F7) || defined(STM32WB)
+#if defined(STM32F0) || defined(STM32F1) || defined(STM32F3) || defined(STM32F7) || defined(STM32WB) || defined(STM32H5)
         spiHandle.Init.CRCLength = SPI_CRC_LENGTH_8BIT;
         spiHandle.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
 #endif
@@ -58,8 +58,8 @@ namespace hal
         if (!receiving)
             dummyToReceive = sendData.size();
 
-        peripheralSpi[spiInstance]->CR2 |= SPI_IT_TXE;
-        peripheralSpi[spiInstance]->CR2 |= SPI_IT_RXNE;
+        peripheralSpi[spiInstance]->CR2 |= SPI_IT_TXP;
+        peripheralSpi[spiInstance]->CR2 |= SPI_IT_RXP;
 
         while (sending || receiving || dummyToSend != 0 || dummyToReceive != 0)
             HandleInterrupt();
@@ -68,35 +68,35 @@ namespace hal
     void SynchronousSpiMasterStm::HandleInterrupt()
     {
         uint32_t status = peripheralSpi[spiInstance]->SR;
-        if ((status & SPI_FLAG_RXNE) != 0)
+        if ((status & SPI_FLAG_RXWNE) != 0)
         {
             if (dummyToReceive != 0)
             {
-                (void)peripheralSpi[spiInstance]->DR;
+                (void)peripheralSpi[spiInstance]->RXDR;
                 --dummyToReceive;
             }
             else if (receiving)
             {
-                receiveData.front() = peripheralSpi[spiInstance]->DR;
+                receiveData.front() = peripheralSpi[spiInstance]->RXDR;
                 receiveData.pop_front();
             }
 
             receiving &= !receiveData.empty();
 
             if (dummyToReceive == 0 && !receiving)
-                peripheralSpi[spiInstance]->CR2 &= ~SPI_IT_RXNE;
+                peripheralSpi[spiInstance]->CR2 &= ~SPI_IT_RXP;
         }
 
-        if ((status & SPI_FLAG_TXE) != 0)
+        if ((status & SPI_FLAG_TXP) != 0)
         {
             if (dummyToSend != 0)
             {
-                reinterpret_cast<volatile uint8_t&>(peripheralSpi[spiInstance]->DR) = 0;
+                reinterpret_cast<volatile uint8_t&>(peripheralSpi[spiInstance]->TXDR) = 0;
                 --dummyToSend;
             }
             else if (sending)
             {
-                reinterpret_cast<volatile uint8_t&>(peripheralSpi[spiInstance]->DR) = sendData.front();
+                reinterpret_cast<volatile uint8_t&>(peripheralSpi[spiInstance]->TXDR) = sendData.front();
                 sendData.pop_front();
             }
 
@@ -104,7 +104,7 @@ namespace hal
 
             // After the first transmit, disable interrupt on transmit buffer empty,
             // so that a receive is done before each transmit
-            peripheralSpi[spiInstance]->CR2 &= ~SPI_IT_TXE;
+            peripheralSpi[spiInstance]->CR2 &= ~SPI_IT_TXP;
         }
 
         really_assert(!(peripheralSpi[spiInstance]->SR & SPI_FLAG_OVR));

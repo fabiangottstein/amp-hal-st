@@ -20,7 +20,7 @@
       <xsl:with-param name="by" select="'&#37;20'"/>
     </xsl:call-template>
   </xsl:variable>
-  
+
   <xsl:template name="string-replace-all">
     <xsl:param name="text"/>
     <xsl:param name="replace"/>
@@ -112,7 +112,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
+
   <xsl:template match="mcu:PinSignal">
     <xsl:param name="prefix"/>
     <xsl:param name="postfix"/>
@@ -151,7 +151,7 @@
   </xsl:template>
 
   <xsl:template match="mcu:Signal" mode="analog_default_table">
-    <xsl:if test="starts-with(@Name, 'ADC') and contains(@Name, '_IN')">
+    <xsl:if test="starts-with(@Name, 'ADC') and contains(@Name, '_INP')">
       <analog_pin>
         <xsl:attribute name="instance">
           <xsl:value-of select="substring(@Name, 4, 1)"/>
@@ -164,7 +164,7 @@
           <xsl:value-of select="substring-before(concat(translate(substring(../@Name, 3), '-', '/'), '/'), '/')"/>
         </xsl:attribute>
         <xsl:attribute name="channel">
-          <xsl:value-of select="substring(@Name, 8)"/>
+          <xsl:value-of select="substring(@Name, 9)"/>
         </xsl:attribute>
       </analog_pin>
     </xsl:if>

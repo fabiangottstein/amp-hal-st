@@ -1,6 +1,6 @@
 #include "hal_st/stm32fxxx/SpiMasterStmDma.hpp"
 #include "generated/stm32fxxx/PeripheralTable.hpp"
-
+#if !defined(STM32H5)
 namespace hal
 {
     SpiMasterStmDma::SpiMasterStmDma(hal::DmaStm::TransmitStream& transmitStream, hal::DmaStm::ReceiveStream& receiveStream, uint8_t oneBasedSpiIndex, GpioPinStm& clock, GpioPinStm& miso, GpioPinStm& mosi, const Config& config, GpioPinStm& slaveSelect)
@@ -197,3 +197,4 @@ namespace hal
         peripheralSpi[spiInstance]->CR2 &= ~SPI_CR2_RXDMAEN;
     }
 }
+#endif

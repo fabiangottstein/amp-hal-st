@@ -15,7 +15,7 @@ namespace hal
 #if !defined(STM32WB) && !defined(STM32G0)
             GPIOF,
 #endif
-#if defined(STM32F2) || defined(STM32F4) || defined(STM32F7)
+#if defined(STM32F2) || defined(STM32F4) || defined(STM32F7) || defined(STM32H5)
             GPIOG,
             GPIOH,
             GPIOI,

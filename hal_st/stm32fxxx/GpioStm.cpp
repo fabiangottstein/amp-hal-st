@@ -18,7 +18,7 @@ namespace hal
 #if !defined(STM32WB) && !defined(STM32G0)
             GPIOF,
 #endif
-#if defined(STM32F2) || defined(STM32F4) || defined(STM32F7)
+#if defined(STM32F2) || defined(STM32F4) || defined(STM32F7) || defined(STM32H5)
             GPIOG,
             GPIOH,
             GPIOI,
@@ -342,7 +342,7 @@ namespace hal
         : pinoutTable(pinoutTable)
         , analogTable(analogTable)
         , assignedPins()
-#if defined(STM32F0) | defined(STM32G0)
+#if defined(STM32F0) || defined(STM32G0)
         , interruptDispatcher0_1(EXTI0_1_IRQn, [this]()
               { ExtiInterrupt(EXTI0_1_IRQn, 0, 2); })
         , interruptDispatcher2_3(EXTI2_3_IRQn, [this]()
@@ -354,6 +354,7 @@ namespace hal
               { ExtiInterrupt(EXTI0_IRQn, 0, 1); })
         , interruptDispatcher1(EXTI1_IRQn, [this]()
               { ExtiInterrupt(EXTI1_IRQn, 1, 2); })
+#endif
 #if defined(STM32F3)
         , interruptDispatcher2(EXTI2_TSC_IRQn, [this]()
               { ExtiInterrupt(EXTI2_TSC_IRQn, 2, 3); })
@@ -365,13 +366,37 @@ namespace hal
               { ExtiInterrupt(EXTI3_IRQn, 3, 4); })
         , interruptDispatcher4(EXTI4_IRQn, [this]()
               { ExtiInterrupt(EXTI4_IRQn, 4, 5); })
+#if defined(STM32H5)
+        , interruptDispatcher5(EXTI5_IRQn, [this]()
+              { ExtiInterrupt(EXTI5_IRQn, 5, 6); })
+        , interruptDispatcher6(EXTI6_IRQn, [this]()
+              { ExtiInterrupt(EXTI6_IRQn, 6, 7); })
+        , interruptDispatcher7(EXTI7_IRQn, [this]()
+              { ExtiInterrupt(EXTI7_IRQn, 7, 8); })
+        , interruptDispatcher8(EXTI8_IRQn, [this]()
+              { ExtiInterrupt(EXTI8_IRQn, 8, 9); })
+        , interruptDispatcher9(EXTI9_IRQn, [this]()
+              { ExtiInterrupt(EXTI9_IRQn, 9, 10); })
+        , interruptDispatcher10(EXTI10_IRQn, [this]()
+              { ExtiInterrupt(EXTI10_IRQn, 10, 11); })
+        , interruptDispatcher11(EXTI11_IRQn, [this]()
+              { ExtiInterrupt(EXTI11_IRQn, 11, 12); })
+        , interruptDispatcher12(EXTI12_IRQn, [this]()
+              { ExtiInterrupt(EXTI12_IRQn, 12, 13); })
+        , interruptDispatcher13(EXTI13_IRQn, [this]()
+              { ExtiInterrupt(EXTI13_IRQn, 13, 14); })
+        , interruptDispatcher14(EXTI14_IRQn, [this]()
+              { ExtiInterrupt(EXTI14_IRQn, 14, 15); })
+        , interruptDispatcher15(EXTI15_IRQn, [this]()
+              { ExtiInterrupt(EXTI15_IRQn, 15, 16); })
+#else
         , interruptDispatcher9_5(EXTI9_5_IRQn, [this]()
               { ExtiInterrupt(EXTI9_5_IRQn, 5, 10); })
         , interruptDispatcher15_10(EXTI15_10_IRQn, [this]()
               { ExtiInterrupt(EXTI15_10_IRQn, 10, 16); })
 #endif
     {
-#if !defined(STM32WB)
+#if !defined(STM32WB) && !defined(STM32H5)
         __SYSCFG_CLK_ENABLE();
 #endif
         __GPIOA_CLK_ENABLE();
@@ -384,7 +409,7 @@ namespace hal
 #if !defined(STM32WB) && !defined(STM32G0)
         __GPIOF_CLK_ENABLE();
 #endif
-#if defined(STM32F2) || defined(STM32F4) || defined(STM32F7)
+#if defined(STM32F2) || defined(STM32F4) || defined(STM32F7) || defined(STM32H5)
         __GPIOG_CLK_ENABLE();
         __GPIOH_CLK_ENABLE();
         __GPIOI_CLK_ENABLE();
@@ -431,13 +456,13 @@ namespace hal
     {
         uint32_t extiMask = 0xf << ((index & 0x03) << 2);
         uint32_t extiValue = static_cast<uint8_t>(port) << ((index & 0x03) << 2);
-#if defined(STM32G0)
+#if defined(STM32G0) || defined(STM32H5)
         EXTI->EXTICR[index >> 2] = (EXTI->EXTICR[index >> 2] & ~extiMask) | extiValue;
 #else
         SYSCFG->EXTICR[index >> 2] = (SYSCFG->EXTICR[index >> 2] & ~extiMask) | extiValue;
 #endif
 
-#if defined(STM32WB) || defined(STM32G4) || defined(STM32G0)
+#if defined(STM32WB) || defined(STM32G4) || defined(STM32G0) || defined(STM32H5)
         if (trigger != InterruptTrigger::fallingEdge)
             EXTI->RTSR1 |= 1 << index;
         else
@@ -468,7 +493,7 @@ namespace hal
 
     void GpioStm::DisableInterrupt(Port port, uint8_t index)
     {
-#if defined(STM32WB) || defined(STM32G4) || defined(STM32G0)
+#if defined(STM32WB) || defined(STM32G4) || defined(STM32G0) || defined(STM32H5)
         EXTI->IMR1 &= ~(1 << index);
 #else
         EXTI->IMR &= ~(1 << index);
@@ -484,7 +509,7 @@ namespace hal
             if (EXTI->PR1 & (1 << line))
             {
                 EXTI->PR1 &= (1 << line); // Interrupt pending is cleared by writing a 1 to it
-#elif defined(STM32G0)
+#elif defined(STM32G0) || defined(STM32H5)
             if ((EXTI->RPR1 & (1 << line)) || (EXTI->FPR1 & (1 << line)))
             {
                 EXTI->RPR1 &= (1 << line); // Interrupt pending is cleared by writing a 1 to it

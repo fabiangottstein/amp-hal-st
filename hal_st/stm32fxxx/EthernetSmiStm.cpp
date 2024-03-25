@@ -3,7 +3,7 @@
 #include "generated/stm32fxxx/PeripheralTable.hpp"
 #include "infra/util/BitLogic.hpp"
 
-#if defined(HAS_PERIPHERAL_ETHERNET)
+#if defined(HAS_PERIPHERAL_ETHERNET) && !defined(STM32H5)
 
 namespace hal
 {

@@ -10,7 +10,7 @@
 
 namespace hal
 {
-#if defined(STM32G0) || defined(STM32G4) || defined(STM32WB)
+#if defined(STM32G0) || defined(STM32G4) || defined(STM32WB) || defined(STM32H5)
 #define DMA_CHANNEL_BASED
 #else
 #define DMA_STREAM_BASED

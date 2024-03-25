@@ -4,6 +4,7 @@
 #include "hal_st/stm32fxxx/DmaStm.hpp"
 #include "hal_st/stm32fxxx/GpioStm.hpp"
 #include "hal_st/stm32fxxx/UartStmDma.hpp"
+#include "hal_st/stm32fxxx/UartStm.hpp"
 
 namespace main_
 {
@@ -16,6 +17,8 @@ namespace main_
         hal::GpioPinStm ledGreen{ hal::Port::B, 8 };
 #elif defined(STM32G0)
         hal::GpioPinStm ledGreen{ hal::Port::C, 6 };
+#elif defined(STM32H5)
+        hal::GpioPinStm ledGreen{ hal::Port::B, 0 };
 #else
         hal::GpioPinStm ledGreen{ hal::Port::B, 3 };
 #endif
@@ -52,13 +55,13 @@ namespace main_
     struct Nucleo144Ui
     {
         hal::GpioPinStm buttonOne{ hal::Port::C, 13, hal::Drive::Default, hal::Speed::Default, hal::WeakPull::Default };
-        hal::GpioPinStm ledRed{ hal::Port::B, 14 };
+        hal::GpioPinStm ledRed{ hal::Port::G, 4 };
 #if defined(STM32L496ZG) || defined(STM32L496ZG) || defined(STM32L496ZG_P) || defined(STM32L4A6ZG) || defined(STM32L4P5ZG) || defined(STM32LR5ZI) || defined(STM32L4R5ZI_P)
         hal::GpioPinStm ledGreen{ hal::Port::C, 7 };
 #else
         hal::GpioPinStm ledGreen{ hal::Port::B, 0 };
 #endif
-        hal::GpioPinStm ledBlue{ hal::Port::B, 7 };
+        hal::GpioPinStm ledBlue{ hal::Port::F, 4 };
     };
 }
 

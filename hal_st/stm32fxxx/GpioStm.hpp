@@ -265,6 +265,23 @@ namespace hal
         DispatchedInterruptHandler interruptDispatcher0_1;
         DispatchedInterruptHandler interruptDispatcher2_3;
         DispatchedInterruptHandler interruptDispatcher4_15;
+#elif defined(STM32H5)
+        DispatchedInterruptHandler interruptDispatcher0;
+        DispatchedInterruptHandler interruptDispatcher1;
+        DispatchedInterruptHandler interruptDispatcher2;
+        DispatchedInterruptHandler interruptDispatcher3;
+        DispatchedInterruptHandler interruptDispatcher4;
+        DispatchedInterruptHandler interruptDispatcher5;
+        DispatchedInterruptHandler interruptDispatcher6;
+        DispatchedInterruptHandler interruptDispatcher7;
+        DispatchedInterruptHandler interruptDispatcher8;
+        DispatchedInterruptHandler interruptDispatcher9;
+        DispatchedInterruptHandler interruptDispatcher10;
+        DispatchedInterruptHandler interruptDispatcher11;
+        DispatchedInterruptHandler interruptDispatcher12;
+        DispatchedInterruptHandler interruptDispatcher13;
+        DispatchedInterruptHandler interruptDispatcher14;
+        DispatchedInterruptHandler interruptDispatcher15;
 #else
         DispatchedInterruptHandler interruptDispatcher0;
         DispatchedInterruptHandler interruptDispatcher1;

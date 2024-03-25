@@ -1,7 +1,7 @@
 #include "hal_st/stm32fxxx/SpiSlaveStmDma.hpp"
 #include "generated/stm32fxxx/PeripheralTable.hpp"
 #include "infra/util/BitLogic.hpp"
-
+#if !defined(STM32H5)
 namespace hal
 {
     SpiSlaveStmDma::SpiSlaveStmDma(hal::DmaStm::TransmitStream& transmitStream, hal::DmaStm::ReceiveStream& receiveStream, uint8_t oneBasedSpiIndex, GpioPinStm& clock, GpioPinStm& miso, GpioPinStm& mosi, GpioPinStm& slaveSelect)
@@ -136,3 +136,4 @@ namespace hal
         peripheralSpi[spiInstance]->CR2 &= ~SPI_CR2_RXDMAEN;
     }
 }
+#endif

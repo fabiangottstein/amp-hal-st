@@ -61,6 +61,16 @@ namespace hal
         {
             std::array
             {
+#if defined(STM32H5)
+                &GPDMA1->MISR,
+                &GPDMA1->MISR,
+                &GPDMA1->MISR,
+                &GPDMA1->MISR,
+                &GPDMA1->MISR,
+                &GPDMA1->MISR,
+                &GPDMA1->MISR,
+                &GPDMA1->MISR,
+#else
                 &DMA1->ISR,
                 &DMA1->ISR,
                 &DMA1->ISR,
@@ -73,7 +83,21 @@ namespace hal
 #if defined(DMA1_Channel8)
                 &DMA1->ISR,
 #endif
+#endif
             },
+#if defined(STM32H5)
+            std::array
+            {
+                &GPDMA2->MISR,
+                &GPDMA2->MISR,
+                &GPDMA2->MISR,
+                &GPDMA2->MISR,
+                &GPDMA2->MISR,
+                &GPDMA2->MISR,
+                &GPDMA2->MISR,
+                &GPDMA2->MISR,
+            },
+#else
 #if defined(DMA2_Channel1)
             std::array
             {
@@ -91,9 +115,16 @@ namespace hal
 #endif
             },
 #endif
+#endif
         };
 
         const std::array dmaIFCR
+#if defined(STM32H5)
+        {
+            std::array { &GPDMA1_Channel0->CFCR, &GPDMA1_Channel1->CFCR, &GPDMA1_Channel2->CFCR, &GPDMA1_Channel3->CFCR, &GPDMA1_Channel4->CFCR, &GPDMA1_Channel5->CFCR, &GPDMA1_Channel6->CFCR, &GPDMA1_Channel7->CFCR, },
+            std::array { &GPDMA2_Channel0->CFCR, &GPDMA2_Channel1->CFCR, &GPDMA2_Channel2->CFCR, &GPDMA2_Channel3->CFCR, &GPDMA2_Channel4->CFCR, &GPDMA2_Channel5->CFCR, &GPDMA2_Channel6->CFCR, &GPDMA2_Channel7->CFCR, },
+        };
+#else
         {
             std::array
             {
@@ -126,39 +157,42 @@ namespace hal
                 &DMA2->IFCR,
 #endif
             },
-#endif
         };
+#endif
+#endif
 
         const std::array DmaChannel
         {
             std::array
             {
-                DMA1_Channel1,
-                DMA1_Channel2,
-                DMA1_Channel3,
-                DMA1_Channel4,
-                DMA1_Channel5,
-                DMA1_Channel6,
-#if defined(DMA1_Channel7)
-                DMA1_Channel7,
+                GPDMA1_Channel0,
+                GPDMA1_Channel1,
+                GPDMA1_Channel2,
+                GPDMA1_Channel3,
+                GPDMA1_Channel4,
+                GPDMA1_Channel5,
+                GPDMA1_Channel6,
+#if defined(GPDMA1_Channel7)
+                GPDMA1_Channel7,
 #endif
 #if defined(DMA1_Channel8)
                 DMA1_Channel8,
 #endif
             },
-#if defined(DMA2_Channel1)
+#if defined(GPDMA2_Channel1)
             std::array
             {
-                DMA2_Channel1,
-                DMA2_Channel2,
-                DMA2_Channel3,
-                DMA2_Channel4,
-                DMA2_Channel5,
-                DMA2_Channel6,
-#if defined(DMA2_Channel7)
-                DMA2_Channel7,
+                GPDMA2_Channel0,
+                GPDMA2_Channel1,
+                GPDMA2_Channel2,
+                GPDMA2_Channel3,
+                GPDMA2_Channel4,
+                GPDMA2_Channel5,
+                GPDMA2_Channel6,
+#if defined(GPDMA2_Channel7)
+                GPDMA2_Channel7,
 #endif
-#if defined(DMA2_Channel8)
+#if defined(GPDMA2_Channel8)
                 DMA2_Channel8,
 #endif
             },
@@ -168,30 +202,32 @@ namespace hal
         {
             std::array
             {
-                DMA1_Channel1_IRQn,
-                DMA1_Channel2_IRQn,
-                DMA1_Channel3_IRQn,
-                DMA1_Channel4_IRQn,
-                DMA1_Channel5_IRQn,
-                DMA1_Channel6_IRQn,
-#if defined(DMA1_Channel7)
-                DMA1_Channel7_IRQn,
+                GPDMA1_Channel0_IRQn,
+                GPDMA1_Channel1_IRQn,
+                GPDMA1_Channel2_IRQn,
+                GPDMA1_Channel3_IRQn,
+                GPDMA1_Channel4_IRQn,
+                GPDMA1_Channel5_IRQn,
+                GPDMA1_Channel6_IRQn,
+#if defined(GPDMA1_Channel7)
+                GPDMA1_Channel7_IRQn,
 #endif
 #if defined(DMA1_Channel8)
                 DMA1_Channel8_IRQn,
 #endif
             },
-#if defined(DMA2_Channel1)
+#if defined(GPDMA2_Channel1)
             std::array
             {
-                DMA2_Channel1_IRQn,
-                DMA2_Channel2_IRQn,
-                DMA2_Channel3_IRQn,
-                DMA2_Channel4_IRQn,
-                DMA2_Channel5_IRQn,
-                DMA2_Channel6_IRQn,
-#if defined(DMA2_Channel7)
-                DMA2_Channel7_IRQn,
+                GPDMA2_Channel0_IRQn,
+                GPDMA2_Channel1_IRQn,
+                GPDMA2_Channel2_IRQn,
+                GPDMA2_Channel3_IRQn,
+                GPDMA2_Channel4_IRQn,
+                GPDMA2_Channel5_IRQn,
+                GPDMA2_Channel6_IRQn,
+#if defined(GPDMA2_Channel7)
+                GPDMA2_Channel7_IRQn,
 #endif
 #if defined(DMA2_Channel8)
                 DMA2_Channel8_IRQn,
@@ -202,12 +238,14 @@ namespace hal
 
         const std::array streamToTCIF
         {
-            DMA_FLAG_TC1,
-            DMA_FLAG_TC2,
-            DMA_FLAG_TC3,
-            DMA_FLAG_TC4,
-            DMA_FLAG_TC5,
-            DMA_FLAG_TC6,
+            DMA_CFCR_TCF,
+            DMA_CFCR_TCF,
+            DMA_CFCR_TCF,
+            DMA_CFCR_TCF,
+            DMA_CFCR_TCF,
+            DMA_CFCR_TCF,
+            DMA_CFCR_TCF,
+            DMA_CFCR_TCF
 #if defined(DMA_FLAG_TC7)
             DMA_FLAG_TC7,
 #endif
@@ -217,12 +255,14 @@ namespace hal
         };
         const std::array streamToHTIF
         {
-            DMA_FLAG_HT1,
-            DMA_FLAG_HT2,
-            DMA_FLAG_HT3,
-            DMA_FLAG_HT4,
-            DMA_FLAG_HT5,
-            DMA_FLAG_HT6,
+            DMA_CFCR_HTF,
+            DMA_CFCR_HTF,
+            DMA_CFCR_HTF,
+            DMA_CFCR_HTF,
+            DMA_CFCR_HTF,
+            DMA_CFCR_HTF,
+            DMA_CFCR_HTF,
+            DMA_CFCR_HTF,
 #if defined(DMA_FLAG_HT7)
             DMA_FLAG_HT7,
 #endif
@@ -232,12 +272,14 @@ namespace hal
         };
         const std::array streamToTEIF
         {
-            DMA_FLAG_TE1,
-            DMA_FLAG_TE2,
-            DMA_FLAG_TE3,
-            DMA_FLAG_TE4,
-            DMA_FLAG_TE5,
-            DMA_FLAG_TE6,
+            DMA_CFCR_DTEF,
+            DMA_CFCR_DTEF,
+            DMA_CFCR_DTEF,
+            DMA_CFCR_DTEF,
+            DMA_CFCR_DTEF,
+            DMA_CFCR_DTEF,
+            DMA_CFCR_DTEF,
+            DMA_CFCR_DTEF,
 #if defined(DMA_FLAG_TE7)
             DMA_FLAG_TE7,
 #endif
@@ -261,8 +303,8 @@ namespace hal
 
     DmaStm::DmaStm()
     {
-        __DMA1_CLK_ENABLE();
-        __DMA2_CLK_ENABLE();
+        __HAL_RCC_GPDMA1_CLK_ENABLE();
+        __HAL_RCC_GPDMA2_CLK_ENABLE();
 #if defined(STM32WB) || defined(STM32G4)
         __HAL_RCC_DMAMUX1_CLK_ENABLE();
 #endif
@@ -270,8 +312,8 @@ namespace hal
 
     DmaStm::~DmaStm()
     {
-        __DMA1_CLK_DISABLE();
-        __DMA2_CLK_DISABLE();
+        __HAL_RCC_GPDMA1_CLK_DISABLE();
+        __HAL_RCC_GPDMA2_CLK_DISABLE();
 #if defined(STM32WB) || defined(STM32G4)
         __HAL_RCC_DMAMUX1_CLK_DISABLE();
 #endif
@@ -305,11 +347,15 @@ namespace hal
         DmaChannelHandle.Instance = DmaChannel[dmaIndex][streamIndex];
 
         DmaChannelHandle.Init.Direction = DMA_MEMORY_TO_PERIPH;
-        DmaChannelHandle.Init.PeriphInc = DMA_PINC_DISABLE;
-        DmaChannelHandle.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
-        DmaChannelHandle.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+        DmaChannelHandle.Init.SrcInc = DMA_SINC_FIXED;
+        DmaChannelHandle.Init.SrcDataWidth = DMA_SRC_DATAWIDTH_BYTE;
+        DmaChannelHandle.Init.SrcBurstLength = 1;
+        DmaChannelHandle.Init.DestInc = DMA_DINC_FIXED;
+        DmaChannelHandle.Init.DestDataWidth = DMA_DEST_DATAWIDTH_BYTE;
+        DmaChannelHandle.Init.DestBurstLength = 1;
         DmaChannelHandle.Init.Mode = DMA_NORMAL;
-        DmaChannelHandle.Init.Priority = DMA_PRIORITY_MEDIUM;
+        DmaChannelHandle.Init.Priority = DMA_LOW_PRIORITY_HIGH_WEIGHT;
+
 #if defined(DMA_STREAM_BASED)
         DmaChannelHandle.Init.Channel = dmaChannel[channelId.channel];
         DmaChannelHandle.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
@@ -353,7 +399,7 @@ namespace hal
 #if defined(STM32F7) || defined(STM32F4)
         return 1 << ((streamRegister->CR & DMA_SxCR_MSIZE) >> POSITION_VAL(DMA_SxCR_MSIZE));
 #else
-        return 1 << ((streamRegister->CCR & DMA_CCR_MSIZE) >> POSITION_VAL(DMA_CCR_MSIZE));
+        return 1 ;
 #endif
     }
 
@@ -369,7 +415,6 @@ namespace hal
 #if defined(STM32F7) || defined(STM32F4)
         streamRegister->CR = (streamRegister->CR & ~DMA_SxCR_PSIZE) | ((dataSizeInBytes & 1) == 0 ? DMA_SxCR_PSIZE_0 : 0) | (dataSizeInBytes > 2 ? DMA_SxCR_PSIZE_1 : 0);
 #else
-        streamRegister->CCR = (streamRegister->CCR & ~DMA_CCR_PSIZE) | ((dataSizeInBytes & 1) == 0 ? DMA_CCR_PSIZE_0 : 0) | (dataSizeInBytes > 2 ? DMA_CCR_PSIZE_1 : 0);
 #endif
     }
 
@@ -379,7 +424,6 @@ namespace hal
 #if defined(STM32F7) || defined(STM32F4)
         streamRegister->CR = (streamRegister->CR & ~DMA_SxCR_MSIZE) | ((dataSizeInBytes & 1) == 0 ? DMA_SxCR_MSIZE_0 : 0) | (dataSizeInBytes > 2 ? DMA_SxCR_MSIZE_1 : 0);
 #else
-        streamRegister->CCR = (streamRegister->CCR & ~DMA_CCR_MSIZE) | ((dataSizeInBytes & 1) == 0 ? DMA_CCR_MSIZE_0 : 0) | (dataSizeInBytes > 2 ? DMA_CCR_MSIZE_1 : 0);
 #endif
     }
 
@@ -420,7 +464,6 @@ namespace hal
 #if defined(STM32F7) || defined(STM32F4)
         streamRegister->CR &= ~DMA_MINC_ENABLE;
 #else
-        streamRegister->CCR &= ~DMA_MINC_ENABLE;
 #endif
     }
 
@@ -440,7 +483,6 @@ namespace hal
 #if defined(STM32F7) || defined(STM32F4)
         streamRegister->CR &= ~DMA_SxCR_CIRC;
 #else
-        streamRegister->CCR &= ~DMA_CCR_CIRC;
 #endif
     }
 
@@ -470,7 +512,6 @@ namespace hal
 #if defined(STM32F7) || defined(STM32F4)
         streamRegister->CR |= DMA_MINC_ENABLE;
 #else
-        streamRegister->CCR |= DMA_MINC_ENABLE;
 #endif
     }
 
@@ -490,7 +531,6 @@ namespace hal
 #if defined(STM32F7) || defined(STM32F4)
         streamRegister->CR |= DMA_SxCR_CIRC;
 #else
-        streamRegister->CCR |= DMA_CCR_CIRC;
 #endif
     }
 
@@ -511,7 +551,6 @@ namespace hal
 #if defined(STM32F7) || defined(STM32F4)
         streamRegister->M0AR = reinterpret_cast<uint32_t>(memoryAddress);
 #else
-        streamRegister->CMAR = reinterpret_cast<uint32_t>(memoryAddress);
 #endif
     }
 
@@ -531,7 +570,6 @@ namespace hal
 #if defined(STM32F7) || defined(STM32F4)
         streamRegister->PAR = reinterpret_cast<uint32_t>(peripheralAddress);
 #else
-        streamRegister->CPAR = reinterpret_cast<uint32_t>(peripheralAddress);
 #endif
     }
 
@@ -551,7 +589,6 @@ namespace hal
 #if defined(STM32F7) || defined(STM32F4)
         streamRegister->NDTR = size / DataSize();
 #else
-        streamRegister->CNDTR = size / DataSize();
 #endif
     }
 
@@ -581,7 +618,7 @@ namespace hal
 #if defined(STM32F7) || defined(STM32F4)
         return streamRegister->NDTR * DataSize();
 #else
-        return streamRegister->CNDTR * DataSize();
+        return 1;
 #endif
     }
 

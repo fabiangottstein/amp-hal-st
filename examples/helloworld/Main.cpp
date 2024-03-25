@@ -35,6 +35,14 @@ int main()
     static hal::UartStmDma stLinkUartDma{ transmitStream, 1, stLinkUartTxPin, stLinkUartRxPin };
 #endif
 
+#if defined(STM32H5)
+    static hal::GpioPinStm stLinkUartTxPin{ hal::Port::D, 8 };
+    static hal::GpioPinStm stLinkUartRxPin{ hal::Port::D, 9 };
+    // static hal::DmaStm::TransmitStream transmitStream{ dmaStm, hal::DmaChannelId{ 1, 6, GPDMA1_REQUEST_USART2_TX } };
+    // static hal::UartStmDma stLinkUartDma{ transmitStream, 3, stLinkUartTxPin, stLinkUartRxPin };
+    static hal::UartStm stLinkUartDma{ 3, stLinkUartTxPin, stLinkUartRxPin };
+#endif
+
     static services::StreamWriterOnSerialCommunication::WithStorage<64> streamWriterOnSerialCommunication{ stLinkUartDma };
     static infra::TextOutputStream::WithErrorPolicy textOutputStream{ streamWriterOnSerialCommunication };
     static services::TracerWithDateTime tracerWithDateTime{ textOutputStream };

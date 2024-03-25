@@ -2,6 +2,8 @@
 #include "infra/event/EventDispatcher.hpp"
 #include "services/util/FlashAlign.hpp"
 
+#if  !defined(STM32H5)
+
 namespace hal
 {
     FlashInternalStmBase::FlashInternalStmBase(infra::ConstByteRange flashMemory)
@@ -166,3 +168,4 @@ namespace hal
         return sectorIndex * sizeOfEachSector;
     }
 }
+#endif

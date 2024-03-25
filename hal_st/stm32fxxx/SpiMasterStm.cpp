@@ -3,6 +3,8 @@
 #include "infra/event/EventDispatcher.hpp"
 #include "infra/util/BitLogic.hpp"
 
+#if  !defined(STM32H5)
+
 namespace hal
 {
     SpiMasterStm::SpiMasterStm(uint8_t oneBasedSpiIndex, GpioPinStm& clock, GpioPinStm& miso, GpioPinStm& mosi, const Config& config, GpioPinStm& slaveSelect)
@@ -145,3 +147,4 @@ namespace hal
         }
     }
 }
+#endif

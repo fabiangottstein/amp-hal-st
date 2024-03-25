@@ -1,7 +1,7 @@
 #include "hal_st/stm32fxxx/UartStmDuplexDma.hpp"
 #include "generated/stm32fxxx/PeripheralTable.hpp"
 #include "infra/event/EventDispatcher.hpp"
-
+#if   !defined(STM32H5)
 namespace hal
 {
     namespace
@@ -167,3 +167,4 @@ namespace hal
         }
     }
 }
+#endif

@@ -2,7 +2,7 @@
 #include "generated/stm32fxxx/PeripheralTable.hpp"
 #include "infra/event/EventDispatcher.hpp"
 #include "infra/util/ReallyAssert.hpp"
-
+#if !defined(STM32H5)
 namespace hal
 {
     I2cStm::I2cStm(uint8_t oneBasedI2cIndex, hal::GpioPinStm& scl, hal::GpioPinStm& sda, const Config& config)
@@ -385,3 +385,4 @@ namespace hal
     }
 #endif
 }
+#endif

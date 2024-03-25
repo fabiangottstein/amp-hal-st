@@ -16,6 +16,8 @@ namespace hal
         handle.Init.Counter = WWDG_CR_T;
 #ifdef STM32F7
         handle.Init.EWIMode = WWDG_EWI_ENABLE;
+#elif STM32H5
+        handle.Init.EWIMode = WWDG_EWI_DISABLE;
 #endif
         HAL_WWDG_Init(&handle);
 
