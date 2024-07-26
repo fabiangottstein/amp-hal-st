@@ -454,10 +454,10 @@ namespace hal
         abort();
     }
 
-    uint32_t GpioStm::AdcChannel(Port port, uint8_t pin, uint8_t instance) const
+    uint32_t GpioStm::AdcChannel(Port port, uint8_t pin, uint8_t instance, AdcChannelType channelType) const
     {
         for (const GpioStm::AnalogPinPosition position : analogTable)
-            if (position.type == Type::adc && position.instance == instance && position.port == port && position.pin == pin)
+            if (position.type == Type::adc && position.instance == instance && position.port == port && position.pin == pin && position.channelType == channelType)
                 return position.channel;
 
         abort();
